@@ -1,9 +1,7 @@
-var txr = [];
-
 function processTransactions(transActions) {
-  txr = [];
+  const txr = [];
 
-  if (!validateTransactions(transActions)) {
+  if (transActions === undefined || transActions === null) {
     throw new Error("Undefined collection of transactions");
   }
 
@@ -43,14 +41,6 @@ function sortByAmountThenName(txCount) {
   }
 
   return sortedResults;
-}
-
-function validateTransactions(transactions) {
-  if (transactions === undefined) {
-    return false;
-  }
-
-  return true;
 }
 
 module.exports = processTransactions;
