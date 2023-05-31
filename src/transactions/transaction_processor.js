@@ -23,24 +23,23 @@ function processTransactions(transActions) {
   return txr;
 }
 
-function sortByAmountThenName(txCount) {
-  let sortedKeys = Object.keys(txCount).sort(function sortingFunction(
-    itemOne,
-    itemTwo
-  ) {
+const sortByAmountThenName = (txCount) => {
+  let sortedKeys = Object.keys(txCount).sort((itemOne, itemTwo) => {
     return (
       txCount[itemTwo] - txCount[itemOne] ||
       itemOne > itemTwo ||
-      -(itemOne < itemTwo)
+      - (itemOne < itemTwo)
     );
   });
 
-  let sortedResults = {};
-  for (let objectKey of sortedKeys) {
-    sortedResults[objectKey] = txCount[objectKey];
-  }
-
+  const sortedResults = sortedKeys.reduce((acc, curr) => {
+    return {
+      ...acc,
+      [curr]: txCount[curr],
+    }
+  }, {});
+  
   return sortedResults;
-}
+};
 
 module.exports = processTransactions;
