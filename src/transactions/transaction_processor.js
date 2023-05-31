@@ -1,45 +1,43 @@
-function processTransactions(transActions) {
-  const txr = [];
-
-  if (transActions === undefined || transActions === null) {
+const processTransactions = (transactions) => {
+  if (transactions === undefined || transactions === null) {
     throw new Error("Undefined collection of transactions");
   }
 
-  let txCount = {};
+  const sortedTransctionsArr = [];
+  let transactionCountObj = {};
 
-  transActions.forEach((transaction) =>
-    txCount[transaction]
-      ? (txCount[transaction] += 1)
-      : (txCount[transaction] = 1)
+  transactions.forEach((transaction) =>
+    transactionCountObj[transaction]
+      ? (transactionCountObj[transaction] += 1)
+      : (transactionCountObj[transaction] = 1)
   );
 
-  txCount = sortByAmountThenName(txCount);
+  transactionCountObj = sortByAmountThenName(transactionCountObj);
 
-  // Place them back in array for returning
-  Object.keys(txCount).forEach(function (key, index) {
-    txr[index] = `${key} ${txCount[key]}`;
-  });
+  Object.keys(transactionCountObj).forEach((key, index) => 
+    sortedTransctionsArr[index] = `${key} ${transactionCountObj[key]}`
+  );
 
-  return txr;
+  return sortedTransctionsArr;
 }
 
-const sortByAmountThenName = (txCount) => {
-  let sortedKeys = Object.keys(txCount).sort((itemOne, itemTwo) => {
+const sortByAmountThenName = (transactionCountObj) => {
+  let sortedKeys = Object.keys(transactionCountObj).sort((a, b) => {
     return (
-      txCount[itemTwo] - txCount[itemOne] ||
-      itemOne > itemTwo ||
-      - (itemOne < itemTwo)
+      transactionCountObj[b] - transactionCountObj[a] ||
+      a > b ||
+      - (a < b)
     );
   });
 
   const sortedResults = sortedKeys.reduce((acc, curr) => {
     return {
       ...acc,
-      [curr]: txCount[curr],
+      [curr]: transactionCountObj[curr],
     }
   }, {});
   
   return sortedResults;
 };
 
-module.exports = processTransactions;
+export default processTransactions
